@@ -75,15 +75,43 @@ function isIt(t) {
 // 7. 3rd largest node
 // Write an algorithm to find the 3rd largest node in a binary search tree.
 
+function numLargest(t, state) {
+     if (t.right) {
+          numLargest(t.right, state);
+          if (state.result) {
+               return;
+          }
+     }
+     if (!--state.num) {
+          console.log('Found it')
+          state.result = t.key;
+          return;
+     }
+     if (t.left) {
+          numLargest(t.left, state)
+     }
+}
+
+function findThird(t) {
+     if (t.key === null) {
+          return null;
+     }
+
+     let state = { num: 3, result: null };
+     numLargest(t, state);
+     return state.result
+}
+
+
 // 8. Balanced BST
 // Write an algorithm that checks if a BST is balanced 
 // (i.e., a tree where no 2 leaves differ in distance from the root by more than 1).
 
 function isItBalanced(t) {
-     if(!t.left) {
+     if (!t.left) {
           return !(t.right && (t.right.left || t.right.right));
      }
-     if(!t.right) {
+     if (!t.right) {
           return !(t.left && (t.left.left || t.left.right));
      }
      return isItBalanced(t.left) && isItBalanced(t.right)
@@ -97,7 +125,7 @@ function isItBalanced(t) {
 // What is the time complexity of your algorithm? E.g., 3, 5, 4, 6, 1, 0, 2 and 3, 1, 5, 2, 4, 6, 0 are two sequences of 
 // arrays but will create the exact same BSTs and your program should return true.
 
-let arr1 = [3, 5, 4, 6, 1, 0, 2] 
+let arr1 = [3, 5, 4, 6, 1, 0, 2]
 let arr2 = [3, 1, 5, 2, 4, 6, 0]
 
 function areTheyTheSame(arr1, arr2) {
@@ -120,7 +148,7 @@ function areTheyTheSame(arr1, arr2) {
      let leftTwo = [];
      let rightTwo = [];
 
-     for(let i = 0; i < arr1.length; i++) {
+     for (let i = 0; i < arr1.length; i++) {
           if (arr1[i] < root) {
                left.push(arr1[i])
           } else if (arr1[i] > root) {
@@ -140,7 +168,7 @@ function main() {
      const drillBST = new BinarySearchTree();
 
      drillBST.insert(3, 3);
-     drillBST.insert(1, 1);     
+     drillBST.insert(1, 1);
      drillBST.insert(4, 4);
      drillBST.insert(6, 6);
      drillBST.insert(9, 9);
@@ -166,22 +194,34 @@ function main() {
 
      const balancedBST = new BinarySearchTree();
 
-     balancedBST.insert(5); 
-     balancedBST.insert(3); 
-     balancedBST.insert(2); 
-     balancedBST.insert(4); 
-     balancedBST.insert(7); 
-     balancedBST.insert(6); 
-     balancedBST.insert(8); 
+     balancedBST.insert(5);
+     balancedBST.insert(3);
+     balancedBST.insert(2);
+     balancedBST.insert(4);
+     balancedBST.insert(7);
+     balancedBST.insert(6);
+     balancedBST.insert(8);
+
+     const newBST = new BinarySearchTree();
+
+     newBST.insert(6);
+     newBST.insert(4);
+     newBST.insert(1);
+     newBST.insert(5);
+
+     // console.log(4, findThird(newBST));
 
      // console.log(drillBST);
      // console.log(easyBST);
      // console.log(tree(drillBST))
      // console.log(BSTHeight(drillBST))
      // console.log(isIt(drillBST))
-     console.log(areTheyTheSame(arr1, arr2))
-     console.log(isItBalanced(drillBST))
-     console.log(isItBalanced(balancedBST))
+     // console.log(areTheyTheSame(arr1, arr2))
+     // console.log(isItBalanced(drillBST))
+     // console.log(isItBalanced(balancedBST))
+     console.log(findThird(drillBST))
+     // console.log(BSTHeight(balancedBST))
+     console.log(findThird(balancedBST))
 }
 
 main();
